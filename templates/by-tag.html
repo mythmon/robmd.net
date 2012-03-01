@@ -1,0 +1,14 @@
+{# Blog tag browser template #}
+
+{% extends "blog-base.html" %}
+
+{% block blog_content %}
+    <p>Pages for the tag {{ vary.item }}.</p>
+
+    <ul>
+    {% for p in vary.value %}
+        <li><a href="{{ p.url }}">{{ p.title }}</a></li>
+    {% endfor %}
+    </ul>
+
+{% endblock %}

@@ -50,57 +50,10 @@
 {# JavaScript #}
 {# ---------- #}
 
-{# JavaScript to run before document loads #}
-{% block js_init %}
-    // Tag filtering (pre-load)
-    // ------------------------
-    function filter_by_tag(tag){
-        /* Remove all blog posts that aren't tagged with `tag`, show
-         * all that are. Ignore blank tag names.
-         */
-
-        if(!tag == ""){
-            $(".article").each(function(index){
-                if( $(this).find("." + tag).length ){
-                    $(this).slideDown("slow");
-                } else {
-                    $(this).slideUp("slow");
-                }
-            });
-        }
-    }
-
-    function show_all(){
-        /* Show all blog posts
-         */
-
-        $(".article").slideDown("slow");
-    }
-{% endblock %}
-
 {# JavaScript to run when document is ready #}
 {% block js_doc_ready %}
     // Highlight the 'blog' menu item
     menu_highlight('blog');
-
-    // Tag filtering (post-load)
-    // -------------------------
-
-    $(".tag-link").click(function(){
-        filter_by_tag($(this).find("a").attr('class'));
-    });
-
-    $("#sidebar #show-all").click(function(){
-        show_all();
-    });
-
-    var filter_on_hash = function(){
-        // If there is a hash in the URL, filter immediately
-
-        if(window.location.hash){
-            filter_by_tag(window.location.hash.slice(1));
-        }
-    }(); 
 {% endblock %}
 
 {% block content %}
@@ -114,9 +67,8 @@
 
             <!-- Blog tag list -->
             <div id='show-all' class='title'>
-                <a href='/blog/#'>
-                    Show all
-                    ({{ site.categories['blog']|length }})
+                <a href='/blog/'>
+                    Show all ({{ site.categories['blog']|length }})
                 </a>
             </div>
             <div id='tags'>
@@ -126,7 +78,9 @@
                 <ul>
                     {% for tag in site.tags|sort %}
                         <li>
-                            {{ tag_link(tag, tag + " (" + site.tags[tag]|length|string() +")") }} 
+                            <a href="/tags/{{ tag }}.html">
+                                {{ tag }} ({{ site.tags[tag]|length|string() }})
+                            </a>
                         </li>
                     {% endfor %}
                 </ul>
